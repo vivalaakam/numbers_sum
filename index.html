@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width">
+    </head>
+    <body>
+            <script>
+            var arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 1, 2, 3, 5, 7, 5, 11], n = Math.max.apply(Math, arr) + 1;
+            function calc(arr, n, s, f, l) {
+                if (typeof l === 'undefined') {
+                    l = 0;
+                }
+
+                if (typeof s === 'undefined') {
+                    s = 0;
+                }
+                if (typeof f === 'undefined') {
+                    f = arr.length - 1;
+                }
+                var data = [];
+                for (var i = s; i <= f; i += 1) {
+                    if ((l === 0 && arr[i] === n) || l > 0) {
+                        data.push({
+                            positions: [i],
+                            numbers: [arr[i]],
+                            len: arr[i]
+                        })
+                    }
+                    if (i < f && l + arr[i] < n) {
+                        var t = calc(arr, n, i + 1, f, l + arr[i]);
+                        for (var j = 0, j_m = t.length; j < j_m; j++) {
+                            if ((l === 0 && arr[i] + t[j].len === n) || l > 0) {
+                                data.push({
+                                    positions: [i].concat(t[j].positions),
+                                    numbers: [arr[i]].concat(t[j].numbers),
+                                    len: arr[i] + t[j].len
+                                })
+                            }
+                        }
+                    }
+                }
+                return data;
+            }
+
+            var data = calc(arr, n);
+            for (var i = 0, i_m = data.length; i < i_m; i++) {
+                document.write(data[i].numbers.join(',') + ' - ' + data[i].positions.join(',') + '<br>')
+            }
+
+
+
+        </script>
+    </body>
+</html>
